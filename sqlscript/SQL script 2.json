@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "--DROP VIEW IF EXISTS dbo.selectColumns_v\nCREATE VIEW selectColumns_v AS\nSELECT * FROM\nOPENROWSET(\n    BULK 'https://fraudcallstorageblob.blob.core.windows.net/fraudoutput/*.parquet',\n    FORMAT = 'parquet'\n) AS [result];\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "frauddb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
