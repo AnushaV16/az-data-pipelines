@@ -1,0 +1,17 @@
+{
+	"name": "callsatsametime",
+	"properties": {
+		"content": {
+			"query": "SELECT\nSwitchNum, callrecTime, CallingIMSI, count(*) as numberofcalls\nFROM dbo.selectColumns_v\nGROUP BY SwitchNum, callrecTime, CallingIMSI\nHAVING  count(*) > 1",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "frauddb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
