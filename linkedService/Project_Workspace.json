@@ -1,0 +1,12 @@
+{
+	"name": "Project_Workspace",
+	"properties": {
+		"description": "PBI workspace for final project",
+		"annotations": [],
+		"type": "PowerBIWorkspace",
+		"typeProperties": {
+			"workspaceID": "eb8fd993-4e19-4f53-a4aa-33be22a0fa43",
+			"tenantID": "0347d89a-0174-4dd3-adeb-3339c89c35f5"
+		}
+	}
+}
