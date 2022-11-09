@@ -48,6 +48,21 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/Project_Workspace')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "PBI workspace for final project",
+				"annotations": [],
+				"type": "PowerBIWorkspace",
+				"typeProperties": {
+					"workspaceID": "eb8fd993-4e19-4f53-a4aa-33be22a0fa43",
+					"tenantID": "0347d89a-0174-4dd3-adeb-3339c89c35f5"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/fraudcallstoragebloboutput')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -159,17 +174,17 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/create_vw_fraudcalldetection')]",
+			"name": "[concat(parameters('workspaceName'), '/callsatsametime')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "Create VIEW vw_Fraudcallsbylocation AS \nSELECT CS1.SwitchNum firstCallLocation,\nCS2.SwitchNum secondCallLocation,\nCS1.CallingIMSI firstCallNumber,\nCS2.CallingIMSI secondCallNumber,\nCS1.CallRecTime firstCallReceivedTime,\nCS2.CallRecTime secondCallReceivedTime,\nCASE WHEN ABS(DATEDIFF(MINUTE, CS1.CallRecTime, CS2.CallRecTime)) BETWEEN 0 and 59 THEN 'fraud' ELSE 'genuine' END as CallFlag,\n COUNT(*) AS FraudulentCalls\n FROM selectColumns_v CS1\n INNER JOIN selectColumns_v CS2\n ON CS1.CallingIMSI = CS2.CallingIMSI\n WHERE CS1.SwitchNum <> CS2.SwitchNum AND (CS1.CallRecTime <> '0001-01-01T00:00:00' AND CS2.CallRecTime <> '0001-01-01T00:00:00')\n GROUP BY CS1.SwitchNum,\nCS2.SwitchNum,\nCS1.CallingIMSI,\nCS2.CallingIMSI,\nCS1.CallRecTime,\nCS2.CallRecTime",
+					"query": "SELECT\nSwitchNum, callrecTime, CallingIMSI, count(*) as numberofcalls\nFROM dbo.selectColumns_v\nGROUP BY SwitchNum, callrecTime, CallingIMSI\nHAVING  count(*) > 1",
 					"metadata": {
 						"language": "sql"
 					},
 					"currentConnection": {
-						"databaseName": "master",
+						"databaseName": "frauddb",
 						"poolName": "Built-in"
 					},
 					"resultLimit": 5000
@@ -199,12 +214,12 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/callsatsametime')]",
+			"name": "[concat(parameters('workspaceName'), '/create_vw_fraudcalldetection')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "SELECT\nSwitchNum, callrecTime, CallingIMSI, count(*) as numberofcalls\nFROM dbo.selectColumns_v\nGROUP BY SwitchNum, callrecTime, CallingIMSI\nHAVING  count(*) > 1",
+					"query": "--CREATE VIEW vw_Fraudcallsbylocation AS \nSELECT CS1.SwitchNum firstCallLocation,\nCS2.SwitchNum secondCallLocation,\nCS1.CallingIMSI firstCallNumber,\nCS2.CallingIMSI secondCallNumber,\nCS1.CallRecTime firstCallReceivedTime,\nCS2.CallRecTime secondCallReceivedTime,\nCASE WHEN ABS(DATEDIFF(SECOND, CS1.CallRecTime, CS2.CallRecTime)) BETWEEN 0 and 59 THEN 'fraud' ELSE 'genuine' END as CallFlag,\n COUNT(*) AS FraudulentCalls\n FROM selectColumns_v CS1\n INNER JOIN selectColumns_v CS2\n ON CS1.CallingIMSI = CS2.CallingIMSI\n WHERE CS1.SwitchNum <> CS2.SwitchNum AND (CS1.CallRecTime <> '0001-01-01T00:00:00' AND CS2.CallRecTime <> '0001-01-01T00:00:00')\n GROUP BY CS1.SwitchNum,\nCS2.SwitchNum,\nCS1.CallingIMSI,\nCS2.CallingIMSI,\nCS1.CallRecTime,\nCS2.CallRecTime",
 					"metadata": {
 						"language": "sql"
 					},
