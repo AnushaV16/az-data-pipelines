@@ -10,7 +10,7 @@
 				"databaseName": "frauddb",
 				"poolName": "Built-in"
 			},
-			"resultLimit": 5000
+			"resultLimit": -1
 		},
 		"type": "SqlQuery"
 	}

@@ -1,0 +1,17 @@
+{
+	"name": "create_main_view_Copy1",
+	"properties": {
+		"content": {
+			"query": "\nSELECT count(*) FROM\nOPENROWSET(\n    BULK 'https://fraudcallstorageblob.blob.core.windows.net/fraudoutput/*.parquet',\n    FORMAT = 'parquet'\n) AS [result];\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "frauddb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": -1
+		},
+		"type": "SqlQuery"
+	}
+}

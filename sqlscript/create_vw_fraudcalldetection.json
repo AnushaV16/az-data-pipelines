@@ -2,7 +2,7 @@
 	"name": "create_vw_fraudcalldetection",
 	"properties": {
 		"content": {
-			"query": "--CREATE VIEW vw_Fraudcallsbylocation AS \nSELECT CS1.SwitchNum firstCallLocation,\nCS2.SwitchNum secondCallLocation,\nCS1.CallingIMSI firstCallNumber,\nCS2.CallingIMSI secondCallNumber,\nCS1.CallRecTime firstCallReceivedTime,\nCS2.CallRecTime secondCallReceivedTime,\nCASE WHEN ABS(DATEDIFF(SECOND, CS1.CallRecTime, CS2.CallRecTime)) BETWEEN 0 and 59 THEN 'fraud' ELSE 'genuine' END as CallFlag,\n COUNT(*) AS FraudulentCalls\n FROM selectColumns_v CS1\n INNER JOIN selectColumns_v CS2\n ON CS1.CallingIMSI = CS2.CallingIMSI\n WHERE CS1.SwitchNum <> CS2.SwitchNum AND (CS1.CallRecTime <> '0001-01-01T00:00:00' AND CS2.CallRecTime <> '0001-01-01T00:00:00')\n GROUP BY CS1.SwitchNum,\nCS2.SwitchNum,\nCS1.CallingIMSI,\nCS2.CallingIMSI,\nCS1.CallRecTime,\nCS2.CallRecTime",
+			"query": "--DROP VIEW IF EXISTS vw_Fraudcallsbylocation\n--CREATE VIEW vw_Fraudcallsbylocation AS \nSELECT CS1.SwitchNum firstCallLocation,\nCS2.SwitchNum secondCallLocation,\nCS1.CallingIMSI firstCallNumber,\nCS2.CallingIMSI secondCallNumber,\nCS1.CallRecTime firstCallReceivedTime,\nCS2.CallRecTime secondCallReceivedTime,\nCASE WHEN ABS(DATEDIFF(SECOND, CS1.CallRecTime, CS2.CallRecTime)) BETWEEN 0 and 59 THEN 'fraud' ELSE 'genuine' END as CallFlag,\n COUNT(*) AS FraudulentCalls\n FROM selectColumns_v CS1\n INNER JOIN selectColumns_v CS2\n ON CS1.CallingIMSI = CS2.CallingIMSI\n WHERE CS1.SwitchNum <> CS2.SwitchNum AND (CS1.CallRecTime <> '0001-01-01T00:00:00' AND CS2.CallRecTime <> '0001-01-01T00:00:00')\n GROUP BY CS1.SwitchNum,\nCS2.SwitchNum,\nCS1.CallingIMSI,\nCS2.CallingIMSI,\nCS1.CallRecTime,\nCS2.CallRecTime",
 			"metadata": {
 				"language": "sql"
 			},
@@ -10,7 +10,7 @@
 				"databaseName": "frauddb",
 				"poolName": "Built-in"
 			},
-			"resultLimit": 5000
+			"resultLimit": -1
 		},
 		"type": "SqlQuery"
 	}
