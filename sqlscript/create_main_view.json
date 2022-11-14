@@ -2,7 +2,7 @@
 	"name": "create_main_view",
 	"properties": {
 		"content": {
-			"query": "--DROP VIEW IF EXISTS dbo.selectColumns_v\nCREATE VIEW selectColumns_v AS\nSELECT * FROM\nOPENROWSET(\n    BULK 'https://fraudcallstorageblob.blob.core.windows.net/fraudoutput/*.parquet',\n    FORMAT = 'parquet'\n) AS [result];\n\n\n\n",
+			"query": "--DROP VIEW IF EXISTS dbo.selectColumns_v\nCREATE VIEW selectColumns_v AS\nSELECT TOP 5000 * FROM\nOPENROWSET(\n    BULK 'https://fraudcallstorageblob.blob.core.windows.net/fraudoutput/*.parquet',\n    FORMAT = 'parquet'\n) AS [result];\n\n\n\n",
 			"metadata": {
 				"language": "sql"
 			},
