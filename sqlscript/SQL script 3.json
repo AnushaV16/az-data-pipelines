@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 3",
+	"properties": {
+		"content": {
+			"query": "SELECT\nSwitchNum,\ncount(*) CallRecords\nFROM dbo.selectColumns_v\nGROUP BY SwitchNum\nORDER BY SwitchNum\n\nSELECT COUNT(*) TotalRecords FROM \nOPENROWSET(\n    BULK 'https://fraudcallstorageblob.blob.core.windows.net/fraudoutput/*.parquet',\n    FORMAT = 'parquet'\n) AS [result];",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "frauddb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
