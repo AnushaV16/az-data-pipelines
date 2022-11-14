@@ -2,7 +2,7 @@
 	"name": "SQL script 3",
 	"properties": {
 		"content": {
-			"query": "SELECT\nSwitchNum,\ncount(*) CallRecords\nFROM dbo.selectColumns_v\nGROUP BY SwitchNum\nORDER BY SwitchNum\n\nSELECT COUNT(*) TotalRecords FROM \nOPENROWSET(\n    BULK 'https://fraudcallstorageblob.blob.core.windows.net/fraudoutput/*.parquet',\n    FORMAT = 'parquet'\n) AS [result];",
+			"query": "--Calls by Region Broken out\nSELECT\nSwitchNum,\ncount(*) CallRecords\nFROM dbo.selectColumns_v\nGROUP BY SwitchNum\nORDER BY SwitchNum\n\n--TotalRecords in the Blob Container\nSELECT COUNT(*) TotalRecords FROM \nOPENROWSET(\n    BULK 'https://fraudcallstorageblob.blob.core.windows.net/fraudoutput/*.parquet',\n    FORMAT = 'parquet'\n) AS [result];",
 			"metadata": {
 				"language": "sql"
 			},
